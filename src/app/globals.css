@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/**
+ * Petalora design tokens.
+ *
+ * Palette is pulled off the logo: deep plum for text and primary actions,
+ * blush and rose-gold for surfaces, warm cream as the page ground. The site is
+ * deliberately light-only. A gifting brand reads as more premium on cream than
+ * on a dark theme, and a forced dark mode would fight the product photography.
+ */
+
+@theme {
+  --color-plum-50: #fdf4f8;
+  --color-plum-100: #fae8f0;
+  --color-plum-200: #f5d2e1;
+  --color-plum-300: #edadc8;
+  --color-plum-400: #e07ba6;
+  --color-plum-500: #d05285;
+  --color-plum-600: #b93669;
+  --color-plum-700: #9c2854;
+  --color-plum-800: #8b3a62;
+  --color-plum-900: #6d2247;
+
+  --color-cream-50: #fffbf7;
+  --color-cream-100: #fdf6ef;
+  --color-cream-200: #f8ebe0;
+
+  --color-rosegold-300: #e8b4a0;
+  --color-rosegold-400: #dc9a82;
+
+  --color-ink: #2a1420;
+  --color-ink-soft: #6b5560;
+
+  --font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-cream-50);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headings carry the brand. Body copy stays in the sans for readability. */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* Consistent focus ring across every interactive element, including the ones
+   the browser styles differently by default. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-plum-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Chrome and Safari render number inputs with spinners that break the address
+   form layout. The pincode field is a text input with inputmode anyway, but
+   this catches any others. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

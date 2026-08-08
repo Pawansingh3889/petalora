@@ -1,0 +1,38 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "petalora",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2026-08-07",
+	// nodejs_compat gives the Worker `node:crypto`, which the Razorpay HMAC
+	// signature checks depend on. Without it those routes fail at runtime.
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	},
+	// Cloudflare D1: SQLite that actually persists on Workers. The local disk
+	// SQLite used in development does not exist here, every isolate would start
+	// with an empty file.
+	//
+	// One entry only, and the binding must stay named DB: that is the name
+	// src/lib/db.ts looks up on the request env. `wrangler d1 create` suggests a
+	// binding named after the database, which would not be found.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "petalora-db",
+			"database_id": "f0f53f03-15d6-4c5c-af34-9a5c5d206107",
+			"migrations_dir": "migrations"
+		}
+	],
+	"vars": {
+		// Public, safe to commit. Secrets go through `wrangler secret put`, never
+		// in this file: it is checked into git.
+		"NEXT_PUBLIC_SITE_URL": "https://petalora.pawankapkoti3889.workers.dev"
+	}
+}

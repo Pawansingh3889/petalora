@@ -30,8 +30,16 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files. Secrets never get committed, but the template does.
 .env*
+!.env.example
+
+# cloudflare build output and local D1 state
+.open-next/
+.wrangler/
+
+# original photography and logo source, kept out of the deployed bundle
+/brand-assets
 
 # vercel
 .vercel
